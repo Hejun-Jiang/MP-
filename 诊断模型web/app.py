@@ -1,13 +1,16 @@
 import streamlit as st
 import numpy as np
+import pandas as pd
 import joblib
+import shap
+import matplotlib.pyplot as plt
 import os
 from sklearn.ensemble import GradientBoostingClassifier
-from sklearn.metrics import accuracy_score, roc_auc_score, roc_curve, auc
-# 获取当前文件的路径
-current_dir = os.path.dirname(__file__)
 
-# 模型和标准化器的文件路径
+# 获取当前文件夹路径
+current_dir = os.path.dirname(os.path.abspath(__file__))
+
+# 模型和标准化器路径
 model_path = os.path.join(current_dir, 'gbc_clf_model.pkl')
 scaler_path = os.path.join(current_dir, 'scaler.pkl')
 
@@ -77,6 +80,7 @@ aki_probability = predicted_probs[0][1]
 if st.button('Diagnose'):
     st.markdown(f"<h3>Based on the feature values, the probability of diagnosing Mycoplasma pneumonia infection is <span style='color:red;'>{aki_probability * 100:.2f}%</span></h3>", unsafe_allow_html=True)
     st.markdown("The reference cutoff value is 56.7%. At this cutoff value, the sensitivity is 82.2% and the specificity is 82.5%.", unsafe_allow_html=True)
+
 
 
 
