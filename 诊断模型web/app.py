@@ -2,7 +2,7 @@ import streamlit as st
 import numpy as np
 import joblib
 import os
-
+import scikit-learn 
 # 获取当前文件的路径
 current_dir = os.path.dirname(__file__)
 
