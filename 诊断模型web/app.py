@@ -2,7 +2,8 @@ import streamlit as st
 import numpy as np
 import joblib
 import os
-import scikit-learn 
+from sklearn.ensemble import GradientBoostingClassifier
+from sklearn.metrics import accuracy_score, roc_auc_score, roc_curve, auc
 # 获取当前文件的路径
 current_dir = os.path.dirname(__file__)
 
