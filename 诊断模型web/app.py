@@ -15,11 +15,13 @@ st.title('The diagnostic model for Mycoplasma pneumoniae infection')
 base_path = '/mount/src/mp-/诊断模型web/'  # 确保此路径为你项目的根路径
 
 # 输入年龄
-Age = st.number_input('Age (Months)', value=0.0, key='age_input')
+if 'age' not in st.session_state:
+    st.session_state.age = 0.0
+Age = st.number_input('Age (Months)', value=st.session_state.age, key='age_input')
 
-if 'age_submitted' not in st.session_state:
-    if st.button('Submit Age'):
-        st.session_state.age_submitted = True
+if st.button('Submit Age'):
+    st.session_state.age_submitted = True
+    st.session_state.age = Age
 
 if 'age_submitted' in st.session_state:
     # 根据年龄选择特征和模型路径
@@ -66,7 +68,13 @@ if 'age_submitted' in st.session_state:
         predicted_probs = model.predict_proba(scaled_features_selected)
         aki_probability = predicted_probs[0][1]
 
+        st.session_state.diagnosed = True
+        st.session_state.aki_probability = aki_probability
+
+    if 'diagnosed' in st.session_state:
+        aki_probability = st.session_state.aki_probability
         st.markdown(f"<h3>Based on the feature values, the probability of diagnosing Mycoplasma pneumonia infection is <span style='color:red;'>{aki_probability * 100:.2f}%</span></h3>", unsafe_allow_html=True)
         st.markdown(f"The reference cutoff value is {cutoff * 100:.2f}%. At this cutoff value, the sensitivity is {sensitivity * 100:.1f}% and the specificity is {specificity * 100:.1f}%.", unsafe_allow_html=True)
+
 
 
