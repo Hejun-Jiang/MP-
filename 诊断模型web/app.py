@@ -15,14 +15,18 @@ st.title('The diagnostic model for Mycoplasma pneumoniae infection')
 base_path = '/mount/src/mp-/诊断模型web/'  # 确保此路径为你项目的根路径
 
 # 输入年龄
-Age = st.number_input('Age (Months)', value=0.0)
+Age = st.number_input('Age (Months)', value=0.0, key='age_input')
 
-if st.button('Submit Age'):
+if 'age_submitted' not in st.session_state:
+    if st.button('Submit Age'):
+        st.session_state.age_submitted = True
+
+if 'age_submitted' in st.session_state:
     # 根据年龄选择特征和模型路径
     if Age >= 60:
         model_path = os.path.join(base_path, 'et_model.pkl')
         scaler_path = os.path.join(base_path, 'scaler_over60.pkl')
-        selected_features = ['TNFβ', 'IL-2', 'Fever', 'PCT', 'ESR', 'IL-2R', 'IFNα', 'Cough', 'IL-1β', 'Hotpeak', 'Il-18', 'Height', 'Weight', 'IL-10','IL-17', 'LDH']
+        selected_features = ['TNFβ', 'IL-2', 'Fever', 'PCT', 'ESR', 'IL-2R', 'IFNα', 'Cough', 'IL-1β', 'Hotpeak', 'Il-18', 'Height', 'Weight', 'IL-10', 'IL-17', 'LDH']
         cutoff = 0.69
         sensitivity = 0.79
         specificity = 0.8
@@ -41,7 +45,7 @@ if st.button('Submit Age'):
     # 创建输入特征的控件
     input_features = {}
     for feature in selected_features:
-        input_features[feature] = st.number_input(f'{feature}', value=0.0)
+        input_features[feature] = st.number_input(f'{feature}', value=0.0, key=f'{feature}_input')
 
     # 确保所有特征都存在，未使用的特征填充为0
     for feature in all_features:
@@ -57,11 +61,12 @@ if st.button('Submit Age'):
     # 仅选择模型所需的特征进行预测
     scaled_features_selected = scaled_features[:, [all_features.index(feature) for feature in selected_features]]
 
-    # 预测
-    predicted_probs = model.predict_proba(scaled_features_selected)
-    aki_probability = predicted_probs[0][1]
-
     if st.button('Diagnose'):
+        # 预测
+        predicted_probs = model.predict_proba(scaled_features_selected)
+        aki_probability = predicted_probs[0][1]
+
         st.markdown(f"<h3>Based on the feature values, the probability of diagnosing Mycoplasma pneumonia infection is <span style='color:red;'>{aki_probability * 100:.2f}%</span></h3>", unsafe_allow_html=True)
         st.markdown(f"The reference cutoff value is {cutoff * 100:.2f}%. At this cutoff value, the sensitivity is {sensitivity * 100:.1f}% and the specificity is {specificity * 100:.1f}%.", unsafe_allow_html=True)
+
 
