@@ -15,7 +15,7 @@ st.title('The diagnostic model for Mycoplasma pneumoniae infection')
 Age = st.number_input('Age (Months)', value=0.0)
 
 # 设定文件路径
-base_path = '/mount/src/mp-/'  # 确保此路径为你项目的根路径
+base_path = '/mount/src/mp-/诊断模型web/'  # 确保此路径为你项目的根路径
 
 # 根据年龄选择特征和模型路径
 if Age >= 60:
