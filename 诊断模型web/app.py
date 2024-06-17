@@ -3,10 +3,40 @@ import numpy as np
 import joblib
 import os
 
-# 定义所有特征名称
-all_features = ['Height', 'Weight', 'IFNα', 'IFNβ', 'IL-10', 'IL-12p70', 'IL-17', 'Il-18', 'IL-1β', 'IL-2',
-                'IL-2R', 'IL-4', 'IL-5', 'IL-6', 'IL-8', 'TNFα', 'TNFβ', 'SAA', 'PCT', 'ESR', 'SF',
-                'LDH', 'CRP', 'Fever', 'Hotpeak', 'Cough', 'Gasp', 'Spo2', 'Age', 'Sex_Female', 'Sex_Male']
+# 定义所有特征名称和单位
+all_features = {
+    'Height': 'Height (cm)',
+    'Weight': 'Weight (kg)',
+    'IFNα': 'IFNα (pg/ml)',
+    'IFNβ': 'IFNβ (pg/ml)',
+    'IL-10': 'IL-10 (pg/ml)',
+    'IL-12p70': 'IL-12p70 (pg/ml)',
+    'IL-17': 'IL-17 (pg/ml)',
+    'Il-18': 'Il-18 (pg/ml)',
+    'IL-1β': 'IL-1β (pg/ml)',
+    'IL-2': 'IL-2 (U/ml)',
+    'IL-2R': 'IL-2R (pg/ml)',
+    'IL-4': 'IL-4 (pg/ml)',
+    'IL-5': 'IL-5 (pg/ml)',
+    'IL-6': 'IL-6 (pg/ml)',
+    'IL-8': 'IL-8 (pg/ml)',
+    'TNFα': 'TNFα (pg/ml)',
+    'TNFβ': 'TNFβ (pg/ml)',
+    'SAA': 'SAA (mg/L)',
+    'PCT': 'PCT (ng/ml)',
+    'ESR': 'ESR (mm/h)',
+    'SF': 'SF (ng/ml)',
+    'LDH': 'LDH (U/ml)',
+    'CRP': 'CRP (mg/L)',
+    'Fever': 'Fever (days)',
+    'Hotpeak': 'Peak temperature (℃)',
+    'Cough': 'Cough (days)',
+    'Gasp': 'Gasp (days)',
+    'Spo2': 'Spo2 (%)',
+    'Age': 'Age (Months)',
+    'Sex_Female': 'Sex_Female',
+    'Sex_Male': 'Sex_Male'
+}
 
 # 初始化页面
 st.title('The diagnostic model for Mycoplasma pneumoniae infection')
@@ -47,21 +77,22 @@ if 'age_submitted' in st.session_state:
     # 创建输入特征的控件
     input_features = {}
     for feature in selected_features:
-        input_features[feature] = st.number_input(f'{feature}', value=0.0, key=f'{feature}_input')
+        label = all_features[feature]
+        input_features[feature] = st.number_input(f'{label}', value=0.0, key=f'{feature}_input')
 
     # 确保所有特征都存在，未使用的特征填充为0
-    for feature in all_features:
+    for feature in all_features.keys():
         if feature not in input_features:
             input_features[feature] = 0.0
 
     # 构建包含所有特征的数组
-    features = np.array([[input_features[feature] for feature in all_features]])
+    features = np.array([[input_features[feature] for feature in all_features.keys()]])
 
     # 标准化特征值
     scaled_features = scaler.transform(features)
 
     # 仅选择模型所需的特征进行预测
-    scaled_features_selected = scaled_features[:, [all_features.index(feature) for feature in selected_features]]
+    scaled_features_selected = scaled_features[:, [list(all_features.keys()).index(feature) for feature in selected_features]]
 
     if st.button('Diagnose'):
         # 预测
