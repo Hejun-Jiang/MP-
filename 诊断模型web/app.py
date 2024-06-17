@@ -108,4 +108,3 @@ if 'age_submitted' in st.session_state:
         st.markdown(f"The reference cutoff value is {cutoff * 100:.2f}%. At this cutoff value, the sensitivity is {sensitivity * 100:.1f}% and the specificity is {specificity * 100:.1f}%.", unsafe_allow_html=True)
 
 
-
