@@ -22,7 +22,7 @@ if st.button('Submit Age'):
     if Age >= 60:
         model_path = os.path.join(base_path, 'et_model.pkl')
         scaler_path = os.path.join(base_path, 'scaler_over60.pkl')
-        selected_features = ['TNFβ', 'IL-2', 'Fever', 'PCT', 'ESR', 'IL-2R', 'IFNα', 'Cough', 'IL-1β', 'Hotpeak', 'Il-18', 'Height', 'Weight', 'IL-10', 'IL-17', 'LDH']
+        selected_features = ['TNFβ', 'IL-2', 'Fever', 'PCT', 'ESR', 'IL-2R', 'IFNα', 'Cough', 'IL-1β', 'Hotpeak', 'Il-18', 'Height', 'Weight',  'IL-17', 'LDH']
         cutoff = 0.69
         sensitivity = 0.79
         specificity = 0.8
