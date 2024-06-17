@@ -40,7 +40,7 @@ all_features = {
 
 # 初始化页面
 st.title('The diagnostic model for Mycoplasma pneumoniae infection')
-
+st.markdown("<p><strong>Please note, all information entered must be collected on the <span style='color:red; font-size:20px;'>day</span> of the patient's visit.</strong></p>", unsafe_allow_html=True)
 # 设定文件路径
 base_path = '/mount/src/mp-/诊断模型web/'  # 确保此路径为你项目的根路径
 
