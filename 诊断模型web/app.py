@@ -9,7 +9,7 @@ all_features = {
     'Weight': 'Weight (kg)',
     'IFNα': 'IFNα (pg/ml)',
     'IFNβ': 'IFNγ (pg/ml)',
-    'IL-10': 'IL-10 (pg/)',
+    'IL-10': 'IL-10 (pg/ml)',
     'IL-12p70': 'IL-12p70 (pg/ml)',
     'IL-17': 'IL-17 (pg/ml)',
     'Il-18': 'Il-18 (pg/ml)',
